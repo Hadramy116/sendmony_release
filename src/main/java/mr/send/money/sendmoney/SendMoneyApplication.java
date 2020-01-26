@@ -10,4 +10,5 @@ public class SendMoneyApplication {
 		SpringApplication.run(SendMoneyApplication.class, args);
 	}
 
+	
 }
