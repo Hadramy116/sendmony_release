@@ -7,6 +7,6 @@ import mr.send.money.sendmoney.entites.AppUser;
 public interface UserRepository extends JpaRepository<AppUser, Integer>{
 	
 	public AppUser findByUserName(String name);
-	
 
+	Boolean existsByUserName(String userName);
 }

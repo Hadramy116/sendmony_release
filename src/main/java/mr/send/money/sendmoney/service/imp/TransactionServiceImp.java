@@ -5,7 +5,6 @@ import mr.send.money.sendmoney.entites.Transaction;
 import mr.send.money.sendmoney.repository.TransactionRepository;
 import mr.send.money.sendmoney.service.util.TransactionService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 

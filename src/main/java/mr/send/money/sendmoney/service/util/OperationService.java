@@ -1,13 +1,16 @@
 package mr.send.money.sendmoney.service.util;
 
 import mr.send.money.sendmoney.entites.Account;
+import mr.send.money.sendmoney.entites.Transaction;
+import mr.send.money.sendmoney.service.util.UserDto.CreditOrDebitForm;
+import mr.send.money.sendmoney.service.util.UserDto.SendingForm;
 
 public interface OperationService {
 
-    void creditAccount(Account account, Double amount);
+    Transaction creditAccount(CreditOrDebitForm creditOrDebitForm);
 
-    void debitAccount(Account account, Double amount);
+    Transaction debitAccount(CreditOrDebitForm creditOrDebitForm);
 
-    void sendMoney(Account sender, Account receiver, Double amount);
+    Transaction sendMoney(SendingForm sendingForm);
 
 }

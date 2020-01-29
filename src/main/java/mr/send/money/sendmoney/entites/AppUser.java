@@ -1,6 +1,7 @@
 package mr.send.money.sendmoney.entites;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.*;
@@ -16,7 +17,8 @@ public class AppUser implements Serializable{
 
 	private String password;
 
-	private AppRole role;
+	@ManyToMany(fetch=FetchType.EAGER)
+	private Collection<AppRole> appRoles = new ArrayList<>();
 
 	@OneToMany(mappedBy ="appUser", cascade= CascadeType.ALL)
     private Collection<Account> accounts;
@@ -24,10 +26,10 @@ public class AppUser implements Serializable{
 	public AppUser() {
 	}
 
-	public AppUser(String userName, String password, AppRole role, Collection<Account> accounts) {
+	public AppUser(String userName, String password, Collection<AppRole> appRoles, Collection<Account> accounts) {
 		this.userName = userName;
 		this.password = password;
-		this.role = role;
+		this.appRoles = appRoles;
 		this.accounts = accounts;
 	}
 
@@ -55,12 +57,12 @@ public class AppUser implements Serializable{
 		this.password = password;
 	}
 
-	public AppRole getRole() {
-		return role;
+	public Collection<AppRole> getAppRoles() {
+		return appRoles;
 	}
 
-	public void setRole(AppRole role) {
-		this.role = role;
+	public void setAppRoles(Collection<AppRole> appRoles) {
+		this.appRoles = appRoles;
 	}
 
 	public Collection<Account> getAccounts() {

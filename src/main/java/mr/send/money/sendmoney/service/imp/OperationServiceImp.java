@@ -6,6 +6,8 @@ import mr.send.money.sendmoney.entites.TxType;
 import mr.send.money.sendmoney.repository.AccountRepository;
 import mr.send.money.sendmoney.repository.TransactionRepository;
 import mr.send.money.sendmoney.service.util.OperationService;
+import mr.send.money.sendmoney.service.util.UserDto.CreditOrDebitForm;
+import mr.send.money.sendmoney.service.util.UserDto.SendingForm;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,39 +27,41 @@ public class OperationServiceImp implements OperationService {
     }
 
     @Override
-    public void creditAccount(Account account, Double amount) {
-        if (accountRepository.existsById(account.getId())) {
-            account.setBalance(account.getBalance() + amount);
-
-            transactionRepository.save(new Transaction(UUID.randomUUID().toString(), "RECHARGE ", amount, new Date(), account, null, TxType.RECHARGE));
+    public Transaction creditAccount(CreditOrDebitForm creditOrDebitForm) {
+        Account account = accountRepository.findByNumAccount(creditOrDebitForm.getNumAccount());
+        if (account != null) {
+            account.setBalance(account.getBalance() + creditOrDebitForm.getAmount());
+            return  transactionRepository.save(new Transaction(UUID.randomUUID().toString(), "RECHARGE ", creditOrDebitForm.getAmount(), new Date(), account, null, TxType.RECHARGE));
         }
+        return null;
     }
 
     @Override
-    public void debitAccount(Account account, Double amount) {
-        if (accountRepository.existsById(account.getId())) {
-            if (account.getBalance() >= amount) {
-                account.setBalance(account.getBalance() - amount);
+    public Transaction debitAccount(CreditOrDebitForm creditOrDebitForm) {
+        Account account = accountRepository.findByNumAccount(creditOrDebitForm.getNumAccount());
+        if (account != null) {
+            if (account.getBalance() >= creditOrDebitForm.getAmount()) {
+                account.setBalance(account.getBalance() - creditOrDebitForm.getAmount());
                 accountRepository.save(account);
-
-                transactionRepository.save(new Transaction(UUID.randomUUID().toString(), "RETRAIT", amount, new Date(), account, null, TxType.RETRAIT));
-
+               return transactionRepository.save(new Transaction(UUID.randomUUID().toString(), "RETRAIT", creditOrDebitForm.getAmount(), new Date(), account, null, TxType.RETRAIT));
             }
         }
+        return null;
     }
 
     @Override
-    public void sendMoney(Account sender, Account receiver, Double amount) {
-        if (accountRepository.existsById(sender.getId()) && accountRepository.existsById(receiver.getId())) {
-            if (sender.getBalance() >= amount) {
-                sender.setBalance(sender.getBalance() - amount);
-                receiver.setBalance(receiver.getBalance() + amount);
-
+    public Transaction sendMoney(SendingForm sendingForm) {
+        Account receiver = accountRepository.findByNumAccount(sendingForm.getNumAccountReceiver());
+        Account sender = accountRepository.findByNumAccount(sendingForm.getNumAccountSender());
+        if (receiver !=null && sender != null) {
+            if (sender.getBalance() >= sendingForm.getAmount()) {
+                sender.setBalance(sender.getBalance() - sendingForm.getAmount());
+                receiver.setBalance(receiver.getBalance() + sendingForm.getAmount());
                 accountRepository.save(sender);
                 accountRepository.save(receiver);
-
-                transactionRepository.save(new Transaction(UUID.randomUUID().toString(), "Trasfert", amount, new Date(), sender, receiver, TxType.TRANSFERT));
+               return transactionRepository.save(new Transaction(UUID.randomUUID().toString(), "Trasfert", sendingForm.getAmount(), new Date(), sender, receiver, TxType.TRANSFERT));
             }
         }
+        return null;
     }
 }

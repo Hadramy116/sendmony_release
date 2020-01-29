@@ -15,6 +15,6 @@ public interface AccountService {
 
     void delete(Integer id);
 
-    List<Account> getCurrentUserAccounts();
+    List<Account> getUserAccounts(String userName);
 
 }

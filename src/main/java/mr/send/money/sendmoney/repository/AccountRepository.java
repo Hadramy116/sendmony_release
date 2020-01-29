@@ -10,6 +10,6 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<Account, Integer>{
 	
 	public Account findByNumAccount(String numAccount);
-	List<Account> findAccountByAppUser(AppUser appUser);
+	List<Account> findAccountByAppUser(AppUser userApp);
 
 }
