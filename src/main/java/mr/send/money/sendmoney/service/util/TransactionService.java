@@ -11,11 +11,15 @@ public interface TransactionService {
 
     Transaction save(Transaction tx);
 
-    Transaction findOne(Long id);
+    Transaction findOne(Integer id);
 
     Page<Transaction> findAll(Pageable pageable);
 
-    List<Transaction> findAccountTransaction(Account account);
+    List<Transaction> findSendingTransactions(Account account);
 
-    void delete(Long id);
+    List<Transaction> findReceiveTransactions(Account account);
+
+    Page<Transaction> findMyAllTransactions(Account account, Pageable pageable);
+
+    void delete(Integer id);
 }

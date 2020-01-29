@@ -3,6 +3,7 @@ package mr.send.money.sendmoney.service.util;
 import mr.send.money.sendmoney.entites.Account;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AccountService {
 
@@ -10,10 +11,10 @@ public interface AccountService {
 
     List<Account> findAll();
 
-    Account findOne(Long id);
+    Optional<Account> findOne(Integer id);
 
-    void delete(Long id);
+    void delete(Integer id);
 
-    Account getCurrentUserAccount();
+    List<Account> getCurrentUserAccounts();
 
 }

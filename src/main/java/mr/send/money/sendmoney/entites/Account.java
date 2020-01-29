@@ -13,14 +13,14 @@ public class Account implements Serializable{
 	  @Id
       @GeneratedValue(strategy = GenerationType.AUTO)
       private int id;
-      private int numAccount;
-      private int balance;
+      private String numAccount;
+      private Double balance;
       private AppUser appUser;
 
       public Account() {
       }
 
-      public Account(int numAccount, int balance, AppUser appUser) {
+      public Account(String numAccount, Double balance, AppUser appUser) {
             this.numAccount = numAccount;
             this.balance = balance;
             this.appUser = appUser;
@@ -34,19 +34,19 @@ public class Account implements Serializable{
             this.id = id;
       }
 
-      public int getNumAccount() {
+      public String getNumAccount() {
             return numAccount;
       }
 
-      public void setNumAccount(int numAccount) {
+      public void setNumAccount(String numAccount) {
             this.numAccount = numAccount;
       }
 
-      public int getBalance() {
+      public Double getBalance() {
             return balance;
       }
 
-      public void setBalance(int balance) {
+      public void setBalance(Double balance) {
             this.balance = balance;
       }
 

@@ -16,7 +16,7 @@ public class Transaction implements Serializable{
 	private String transactionNumber;
 	private String desc;
 	@NotNull
-	private String amount;
+	private Double amount;
 	private Date date;
 	@NotNull
 	private Account sender;
@@ -28,7 +28,7 @@ public class Transaction implements Serializable{
 	public Transaction() {
 	}
 
-	public Transaction(String transactionNumber, String desc, String amount, Date date, Account sender, Account receiver,  TxType txType) {
+	public Transaction(String transactionNumber, String desc, Double amount, Date date, Account sender, Account receiver,  TxType txType) {
 		this.transactionNumber = transactionNumber;
 		this.desc = desc;
 		this.amount = amount;
@@ -62,11 +62,11 @@ public class Transaction implements Serializable{
 		this.desc = desc;
 	}
 
-	public String getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(String amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
