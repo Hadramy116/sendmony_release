@@ -12,7 +12,7 @@ public class AppUser implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-
+	@Column(unique = true)
 	private String userName;
 
 	private String password;
