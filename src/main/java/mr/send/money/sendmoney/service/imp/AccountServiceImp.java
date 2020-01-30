@@ -4,7 +4,9 @@ import mr.send.money.sendmoney.entites.Account;
 import mr.send.money.sendmoney.entites.AppUser;
 import mr.send.money.sendmoney.repository.AccountRepository;
 import mr.send.money.sendmoney.service.util.AccountService;
+import mr.send.money.sendmoney.service.util.UserDto.AccountForm;
 import mr.send.money.sendmoney.service.util.UserService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,8 +26,16 @@ public class AccountServiceImp implements AccountService {
     }
 
     @Override
-    public Account save(Account account) {
-        return accountRepository.save(account);
+    public Account save(AccountForm account) throws UsernameNotFoundException{
+        AppUser user = userServiceImp.findUserByUsername(account.getUserName()).orElseThrow(
+                () -> new UsernameNotFoundException("Not found user by this name : "+account.getUserName())
+        );
+
+        return accountRepository.save(new Account(
+                account.getNumAccount(),
+                0.0,
+                user
+        ));
     }
 
     public Account findAccountByNumber(String number) {
@@ -50,7 +60,8 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public List<Account> getUserAccounts(String userName) {
-        AppUser user = userServiceImp.findUserByUsername(userName);
+        AppUser user = userServiceImp.findUserByUsername(userName)
+                .orElseThrow(() -> new UsernameNotFoundException("Not found user with username : "+userName));
         if (user != null) {
             return accountRepository.findAccountByAppUser(user);
         }

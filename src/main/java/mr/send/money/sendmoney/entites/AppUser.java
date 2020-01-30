@@ -1,5 +1,7 @@
 package mr.send.money.sendmoney.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +13,7 @@ public class AppUser implements Serializable{
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Long id;
 	@Column(unique = true)
 	private String userName;
 
@@ -33,11 +35,11 @@ public class AppUser implements Serializable{
 		this.accounts = accounts;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -49,6 +51,7 @@ public class AppUser implements Serializable{
 		this.userName = userName;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}

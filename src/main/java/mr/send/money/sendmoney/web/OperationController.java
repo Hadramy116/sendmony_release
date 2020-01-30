@@ -1,11 +1,11 @@
 package mr.send.money.sendmoney.web;
 
-import mr.send.money.sendmoney.entites.Account;
 import mr.send.money.sendmoney.entites.Transaction;
+import mr.send.money.sendmoney.secure.payload.response.MessageResponse;
 import mr.send.money.sendmoney.service.imp.OperationServiceImp;
 import mr.send.money.sendmoney.service.util.UserDto.CreditOrDebitForm;
 import mr.send.money.sendmoney.service.util.UserDto.SendingForm;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,18 +25,37 @@ public class OperationController {
     }
 
     @PostMapping( "/credit" )
-    public Transaction credit(@RequestBody @Valid @NotNull CreditOrDebitForm creditOrDebitForm) {
-        return operationServiceImp.creditAccount(creditOrDebitForm);
+    public ResponseEntity<?> credit(@RequestBody @Valid @NotNull CreditOrDebitForm creditOrDebitForm) {
+
+        Transaction tx = operationServiceImp.creditAccount(creditOrDebitForm);
+        if (tx == null)
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: can not credit account !"));
+
+        return ResponseEntity.ok().body(tx);
     }
 
     @PostMapping( "/debit" )
-    public Transaction debit(@RequestBody @Valid @NotNull CreditOrDebitForm creditOrDebitForm) {
-        return operationServiceImp.debitAccount(creditOrDebitForm);
+    public ResponseEntity<?> debit(@RequestBody @Valid @NotNull CreditOrDebitForm creditOrDebitForm) {
+        Transaction tx = operationServiceImp.debitAccount(creditOrDebitForm);
+        if (tx == null)
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: can not debit your account !"));
+
+        return ResponseEntity.ok().body(tx);
     }
 
     @PostMapping( "/send" )
-    public Transaction send(@RequestBody @Valid @NotNull SendingForm sendingForm) {
-        return operationServiceImp.sendMoney(sendingForm);
+    public ResponseEntity<?> send(@RequestBody @Valid @NotNull SendingForm sendingForm) {
+        Transaction tx = operationServiceImp.sendMoney(sendingForm);
+        if (tx == null)
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: can not send  any things !"));
+
+        return ResponseEntity.ok().body(tx);
     }
 
 }
